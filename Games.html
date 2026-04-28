@@ -220,15 +220,37 @@
         .banner-button:hover {
             background-color: #005bb5;
         }
+
+        .hidden{
+            display: none;
+        }
+
+        .alt-button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 100px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .alt-button:hover {
+            background: #357abd;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-banner">
-        <span class="banner-text">If its not loading the game, click the button</span>
-        <a href="altGames.html">
-            <button class="banner-button">Click Me</button>
-        </a>
+    <div class="hidden">
+        <div class="top-banner">
+            <span class="banner-text">If its not loading the game, click the button</span>
+            <a href="altGames.html">
+                <button class="banner-button">Click Me</button>
+            </a>
+        </div>
     </div>
 
     <!-- Sidebar Navigation -->
@@ -256,6 +278,15 @@
         style="display: inline; color: #79aadb; text-decoration: none; font-size: 18px; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);">
         https://forms.gle/SVRWjdvR2XuKzxUx7
     </a>
+
+    <div style="text-align:center; margin-top:20px;">
+        <br>
+        <p>I fixed it so only use this button if it stops working again.</p>
+        <a href="altGames.html">
+            <button class="alt-button">Other Games</button>
+        </a>
+    </div>
+
     </h2>
 
         
