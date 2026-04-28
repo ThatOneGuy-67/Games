@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             display: flex;
+            margin-top: 70px;
         }
 
         .sidebar {
@@ -185,9 +186,51 @@
         #searchBox::placeholder {
             color: rgba(255,255,255,0.5);
         }
+
+        .banner-text {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .top-banner {
+            width: 100%;
+            background: rgba(255, 0, 0, 0.85);
+            backdrop-filter: blur(6px);
+            color: white;
+            display: flex;
+            justify-content: center;   /* centers everything */
+            align-items: center;
+            gap: 12px;                 /* space between text and button */
+            padding: 12px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+        }
+
+        .banner-button {
+            background: #4a90e2;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .banner-button:hover {
+            background-color: #005bb5;
+        }
     </style>
 </head>
 <body>
+
+    <div class="top-banner">
+        <span class="banner-text">If its not loading the game, click the button</span>
+        <a href="altGames.html">
+            <button class="banner-button">Click Me</button>
+        </a>
+    </div>
+
     <!-- Sidebar Navigation -->
     <div class="sidebar" id="sidebar">
     </div>
