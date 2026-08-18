@@ -1,184 +1,1020 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Games</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #2e3244 0%, #36224b 100%);
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Games</title>
 
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 80px;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-            z-index: 1000;
-        }
+<style>
+*{box-sizing:border-box}
 
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
+:root{
+  --bg:#090a0d;
+  --panel:#111216;
+  --panel2:#15161a;
+  --line:rgba(255,255,255,.12);
+  --muted:#858894;
+  --text:#f2f2f4;
+  --soft:#1b1c21;
+}
 
-        .sidebar::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.1);
-        }
+html{scroll-behavior:smooth}
 
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.3);
-            border-radius: 3px;
-        }
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--text);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 20% 0%,rgba(90,95,120,.13),transparent 28%),
+    radial-gradient(circle at 90% 20%,rgba(100,80,130,.08),transparent 30%),
+    #090a0d;
+}
 
-        .sidebar-btn {
-            background: rgb(89, 134, 218);
-            border: none;
-            padding: 12px;
-            font-size: 18px;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            color: white;
-            text-align: center;
-            min-height: 45px;
-        }
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.16;
+  background-image:radial-gradient(rgba(255,255,255,.35) .5px,transparent .5px);
+  background-size:4px 4px;
+}
 
-        .sidebar-btn:hover {
-            background: #79aadb;
-            transform: scale(1.05);
-        }
+button,input{font:inherit}
+button{color:inherit}
 
-        .sidebar-btn.empty {
-            opacity: 0.4;
-            cursor: default;
-        }
+.page{
+  width:min(100%,1220px);
+  margin:8px auto 40px;
+  padding:0 8px;
+  position:relative;
+}
 
-        .sidebar-btn.empty:hover {
-            transform: none;
-            background: rgb(89, 134, 218);
-        }
+.top{
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:9px;
+  background:rgba(16,17,21,.78);
+  padding:20px 20px 12px;
+  box-shadow:0 12px 40px rgba(0,0,0,.22);
+}
 
-        .main-content {
-            margin-left: 100px;
-            flex: 1;
-            padding: 20px;
-        }
+.title-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
-        h1 {
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+.gamepad{
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  color:#e5e5e8;
+}
 
-        .letter-section {
-            margin-bottom: 40px;
-            padding: 0 20px;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-            min-height: 100px;
-        }
+.gamepad svg{
+  width:24px;
+  height:24px;
+}
 
-        .letter-section.empty {
-            opacity: 0.5;
-        }
+h1{
+  font-size:21px;
+  margin:0;
+  font-weight:700;
+  letter-spacing:-.3px;
+}
 
-        .letter-header {
-            color: white;
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid rgba(255,255,255,0.3);
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
+.subtitle{
+  font-size:11px;
+  color:#777a85;
+  margin:2px 0 0 38px;
+}
 
-        .buttons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
+.search{
+  margin-top:11px;
+  position:relative;
+}
 
-        .empty-message {
-            color: rgba(255,255,255,0.6);
-            font-style: italic;
-            text-align: center;
-            padding: 20px;
-        }
+.search svg{
+  position:absolute;
+  left:11px;
+  top:10px;
+  width:15px;
+  height:15px;
+  color:#858894;
+}
 
-        input[type="button"] {
-            background: rgb(89, 134, 218);
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 600px;
-            color: white;
-            text-align: left;
-        }
+#search{
+  width:100%;
+  height:35px;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:9px;
+  background:#1b1c21;
+  color:white;
+  outline:none;
+  padding:0 12px 0 34px;
+  font-size:11px;
+}
 
-        input[type="button"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-            background: #79aadb;
-        }
+#search::placeholder{
+  color:#7d808b;
+}
 
-        input[type="button"]:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
+.filters{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  overflow-x:auto;
+  padding:9px 0 0;
+  scrollbar-width:none;
+}
 
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 60px;
-                padding: 15px 5px;
-            }
-            .sidebar-btn {
-                padding: 8px;
-                font-size: 16px;
-            }
-            .main-content {
-                margin-left: 70px;
-            }
-        }
-    </style>
+.filters::-webkit-scrollbar{
+  display:none;
+}
+
+.filter{
+  white-space:nowrap;
+  border:1px solid rgba(255,255,255,.07);
+  background:#111216;
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:10px;
+  color:#92949d;
+  cursor:pointer;
+  transition:.16s;
+}
+
+.filter:hover{
+  background:#1a1b20;
+  color:#ddd;
+}
+
+.filter.active{
+  background:#e8e8ea;
+  color:#1a1a1c;
+  border-color:#fff;
+  font-weight:650;
+}
+
+.count{
+  opacity:.72;
+  margin-left:3px;
+}
+
+.results{
+  font-family:ui-monospace,SFMono-Regular,Consolas,monospace;
+  color:#737681;
+  font-size:10px;
+  margin:19px 0 9px 2px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(142px,1fr));
+  gap:7px;
+}
+
+.card{
+  min-width:0;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:7px;
+  overflow:hidden;
+  background:#111216;
+  box-shadow:0 5px 18px rgba(0,0,0,.18);
+  transition:transform .14s,border-color .14s,box-shadow .14s;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(255,255,255,.22);
+  box-shadow:0 9px 25px rgba(0,0,0,.3);
+}
+
+.cover{
+  height:82px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  cursor:pointer;
+}
+
+.cover:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  opacity:.22;
+  background-image:
+    linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
+  background-size:15px 15px;
+}
+
+.cover:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    135deg,
+    transparent 45%,
+    rgba(0,0,0,.25)
+  );
+}
+
+.initials{
+  position:relative;
+  z-index:1;
+  font-size:23px;
+  font-weight:800;
+  letter-spacing:-1px;
+  text-shadow:0 2px 4px rgba(0,0,0,.3);
+}
+
+.card-body{
+  height:53px;
+  padding:8px 7px 6px;
+  position:relative;
+}
+
+.name{
+  font-size:10px;
+  font-weight:650;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  padding-right:23px;
+  cursor:pointer;
+}
+
+.meta{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  margin-top:8px;
+}
+
+.badge{
+  font-size:7px;
+  letter-spacing:.3px;
+  color:#878a94;
+  background:#1a1b20;
+  border-radius:4px;
+  padding:3px 5px;
+}
+
+.star,.info{
+  position:absolute;
+  border:0;
+  background:transparent;
+  color:#70737e;
+  cursor:pointer;
+  padding:2px;
+  line-height:1;
+}
+
+.star{
+  right:7px;
+  top:7px;
+}
+
+.info{
+  right:7px;
+  bottom:7px;
+}
+
+.star svg,.info svg{
+  width:12px;
+  height:12px;
+  display:block;
+}
+
+.star.favorite{
+  color:#f2d36b;
+}
+
+.empty{
+  padding:45px 10px;
+  text-align:center;
+  color:#686b75;
+  font-size:11px;
+  grid-column:1/-1;
+}
+
+footer{
+  text-align:center;
+  color:#555861;
+  font-size:9px;
+  padding:28px 0 0;
+}
+
+@media(max-width:700px){
+  .page{
+    padding:0 6px;
+  }
+
+  .top{
+    padding:16px 13px 10px;
+  }
+
+  .grid{
+    grid-template-columns:repeat(auto-fill,minmax(125px,1fr));
+    gap:6px;
+  }
+
+  .cover{
+    height:72px;
+  }
+
+  .card-body{
+    height:51px;
+  }
+}
+</style>
 </head>
+
 <body>
-    <div class="sidebar" id="sidebar">
-    </div>
 
-    <div class="main-content">
+<div class="page">
+
+  <section class="top">
+
+    <div class="title-row">
+
+      <div class="gamepad">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M7 8h10c2.3 0 3.7 1.3 4.3 3.5l1 4.2c.5 2.1-1.1 3.5-2.8 3.5-1 0-1.8-.5-2.5-1.3L15.5 16h-7l-1.5 1.9C6.3 18.6 5.5 19.2 4.5 19.2c-1.7 0-3.3-1.4-2.8-3.5l1-4.2C3.3 9.3 4.7 8 7 8Z"/>
+          <path d="M7 11v4M5 13h4M17 12h.01M19 14h.01"/>
+        </svg>
+      </div>
+
+      <div>
         <h1>Games</h1>
-    <h2 style="color: white; text-align: center; margin-bottom: 30px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); font-weight: normal; font-size: 18px;">
-        <input type="text" placeholder="Search..." id="searchInput" style="padding: 13px; width: 100%; max-width: 420px; border-radius: 8px; border: none; box-shadow: 0 2px 4px rgba(7, 105, 218, 0.1);">
-        <script src="https://cdn.jsdelivr.net/gh/TOG-Web/G@main/searchbut.js"></script>
-    <button id="lolbutton" onclick="const script = document.createElement('script');script.src = 'https://cdn.jsdelivr.net/gh/TOG-Web/G@latest/game.js';document.body.appendChild(script);">Click to load if it isnt loading</button>
-    </h2> 
+        <div class="subtitle" id="subtitle">Loading games...</div>
+      </div>
 
-        
-        <div id="sections-container">  
-        </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/gh/TOG-Web/G@main/games.js"></script>
-   </body> 
-   </html>
+
+    <div class="search">
+
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="6.5"/>
+        <path d="m16 16 5 5"/>
+      </svg>
+
+      <input
+        id="search"
+        type="search"
+        autocomplete="off"
+        placeholder='Search games — try "mc", "1v1", "btd"...'
+      >
+
+    </div>
+
+    <div class="filters" id="filters"></div>
+
+  </section>
+
+  <div class="results" id="results"></div>
+
+  <main class="grid" id="grid"></main>
+
+  <footer>TOG's Web · Offline Games</footer>
+
+</div>
+
+<script>
+
+const files = [
+
+  "1.5.html",
+  "1.8.html",
+  "8ballclassic.html",
+  "amongus.html",
+  "angrybirds.html",
+  "awesometanks2.html",
+  "baconmaydie.html",
+  "badicecream.html",
+  "badicecream2.html",
+  "badpiggies.html",
+  "basketballstars.html",
+  "basketbros.html",
+  "basketrandom.html",
+  "blockysnakes.html",
+  "blumgiracers.html",
+  "blumgirocket.html",
+  "bobtherobber.html",
+  "breakingthebank.html",
+  "bubbleshooter.html",
+  "candycrush.html",
+  "capybaraclicker.html",
+  "carkingarena.html",
+  "chess.html",
+  "choppyorc.html",
+  "circloO.html",
+  "circloO2.html",
+  "clashofvikings.html",
+  "crazycars.html",
+  "dadish2.html",
+  "dadish3.html",
+  "ducklife.html",
+  "ducklife4.html",
+  "eagleride.html",
+  "earntodie2.html",
+  "eggycar.html",
+  "escapingtheprison.html",
+  "evilglitch.html",
+  "fancypantsadventure.html",
+  "fireboyandwatergirl2.html",
+  "fireboyandwatergirl3.html",
+  "footballlegends.html",
+  "freerider3.html",
+  "fruitninja.html",
+  "geometrydash.html",
+  "googlebaseball.html",
+  "hanger2.html",
+  "hillclimbracinglite.html",
+  "houseofhazards.html",
+  "idlebreakout.html",
+  "Indev.html",
+  "johnnytrigger.html",
+  "jumpingshell.html",
+  "karatebros.html",
+  "learntofly.html",
+  "learntofly2.html",
+  "mergeroundracers.html",
+  "minesweeper.html",
+  "motox3m.htm",
+  "motox3m2.html",
+  "motox3mpoolparty.html",
+  "motox3mspookyland.html",
+  "motox3mwinter.html",
+  "noobminer.html",
+  "ovo.html",
+  "ovo2.html",
+  "pacman.html",
+  "papasburgeria.html",
+  "papascupcakeria.html",
+  "papasfreezeria.html",
+  "papaspancakeria.html",
+  "papaswingeria.html",
+  "parkingfury.html",
+  "polytrack.html",
+  "ragdollarchers.htm",
+  "ragdollhit.html",
+  "retrobowl.html",
+  "retrobowlcollege.html",
+  "retrohighway.html",
+  "retropingpong.html",
+  "riddleschool.html",
+  "riddleschool3.html",
+  "riddleschool4.html",
+  "rooftopsnipers2.html",
+  "sandgame.html",
+  "spacebarclicker.html",
+  "spaceiskey.html",
+  "spaceiskey2.html",
+  "spacewaves.html",
+  "speedstars.html",
+  "sprunki.html",
+  "stack.html",
+  "stickarchersbattle.html",
+  "stickfighter.html",
+  "stickmerge.html",
+  "superliquidsoccer.html",
+  "tabletennisworldtour.html",
+  "territorialio.html",
+  "theimpossiblequiz2.html",
+  "thisistheonlylevel.html",
+  "timeshooter2.html",
+  "vexx3m2.html",
+  "volleyrandom.html",
+  "webecomewhatwebehold.html",
+  "wheeliebike.html",
+  "wheely.html",
+  "wheely2.html",
+  "worldshardestgame2.html",
+  "wrestlebros.html",
+  "zombierush.html"
+
+];
+
+const state = {
+  query: "",
+  category: "All",
+  favorites: new Set(
+    JSON.parse(localStorage.getItem("tog-game-favorites") || "[]")
+  )
+};
+
+const categoryNames = [
+  "All",
+  "Favorites",
+  "Offline",
+  "Minecraft",
+  "Retro",
+  "Shooter",
+  "Racing",
+  "Sports",
+  "Puzzle",
+  ".io",
+  "Idle",
+  "Platformer"
+];
+
+const categoryMatchers = {
+
+  Minecraft:
+    /minecraft|eaglercraft|minceraft|1.5|1.8/i,
+
+  Retro:
+    /mario|sonic|zelda|kirby|metroid|castlevania|pokemon|megaman|donkeykong|contra|doom|quake|finalfantasy|streetfighter|mortalkombat|pacman|galaga|starfox|madden|fifa|nba|nfl|nhl|wario|warioland/i,
+
+  Shooter:
+    /shooter|gun|sniper|war|strike|cod|doom|quake|halo|battlefield|counter|fnaf|zombie|assassin/i,
+
+  Racing:
+    /race|racer|racing|kart|drift|moto|car|road|rally|speed|bike|snowrider|motox|wheely|truck|polytrack/i,
+
+  Sports:
+    /soccer|football|basket|nba|nfl|nhl|fifa|tennis|golf|boxing|wrestle|volley|baseball|skate|pool|bowling/i,
+
+  Puzzle:
+    /puzzle|tetris|chess|checkers|sudoku|2048|blox|wordle|connect|brain|quiz|factory|sort|mastermind|peg|plinko|minesweeper/i,
+
+  ".io":
+    /io/i,
+
+  Idle:
+    /idle|clicker|tycoon|incremental|simulator|miner/i,
+
+  Platformer:
+    /platform|jump|vex|run|mario|sonic|adventure|parkour|leveldevil|fireboy|watergirl/i
+};
+
+const specialNames = {
+
+  "1.5.html":"1.5",
+  "1.8.html":"1.8",
+  "8ballclassic.html":"8 Ball Classic",
+  "amongus.html":"Among Us",
+  "angrybirds.html":"Angry Birds",
+  "awesometanks2.html":"Awesome Tanks 2",
+  "baconmaydie.html":"Bacon May Die",
+  "badicecream.html":"Bad Ice Cream",
+  "badicecream2.html":"Bad Ice Cream 2",
+  "badpiggies.html":"Bad Piggies",
+  "basketballstars.html":"Basketball Stars",
+  "basketbros.html":"Basket Bros",
+  "basketrandom.html":"Basket Random",
+  "blockysnakes.html":"Blocky Snakes",
+  "blumgiracers.html":"Blumgi Racers",
+  "blumgirocket.html":"Blumgi Rocket",
+  "bobtherobber.html":"Bob the Robber",
+  "breakingthebank.html":"Breaking the Bank",
+  "bubbleshooter.html":"Bubble Shooter",
+  "candycrush.html":"Candy Crush",
+  "capybaraclicker.html":"Capybara Clicker",
+  "carkingarena.html":"Car King Arena",
+  "chess.html":"Chess",
+  "choppyorc.html":"Choppy Orc",
+  "circloO.html":"CircloO",
+  "circloO2.html":"CircloO 2",
+  "clashofvikings.html":"Clash of Vikings",
+  "crazycars.html":"Crazy Cars",
+  "dadish2.html":"Dadish 2",
+  "dadish3.html":"Dadish 3",
+  "ducklife.html":"Duck Life",
+  "ducklife4.html":"Duck Life 4",
+  "eagleride.html":"Eagle Ride",
+  "earntodie2.html":"Earn to Die 2",
+  "eggycar.html":"Eggy Car",
+  "escapingtheprison.html":"Escaping the Prison",
+  "evilglitch.html":"Evil Glitch",
+  "fancypantsadventure.html":"Fancy Pants Adventure",
+  "fireboyandwatergirl2.html":"Fireboy and Watergirl 2",
+  "fireboyandwatergirl3.html":"Fireboy and Watergirl 3",
+  "footballlegends.html":"Football Legends",
+  "freerider3.html":"Free Rider 3",
+  "fruitninja.html":"Fruit Ninja",
+  "geometrydash.html":"Geometry Dash",
+  "googlebaseball.html":"Google Baseball",
+  "hanger2.html":"Hanger 2",
+  "hillclimbracinglite.html":"Hill Climb Racing Lite",
+  "houseofhazards.html":"House of Hazards",
+  "idlebreakout.html":"Idle Breakout",
+  "Indev.html":"Indev",
+  "johnnytrigger.html":"Johnny Trigger",
+  "jumpingshell.html":"Jumping Shell",
+  "karatebros.html":"Karate Bros",
+  "learntofly.html":"Learn to Fly",
+  "learntofly2.html":"Learn to Fly 2",
+  "mergeroundracers.html":"Merge Round Racers",
+  "minesweeper.html":"Minesweeper",
+  "motox3m.htm":"Moto X3M",
+  "motox3m2.html":"Moto X3M 2",
+  "motox3mpoolparty.html":"Moto X3M Pool Party",
+  "motox3mspookyland.html":"Moto X3M Spooky Land",
+  "motox3mwinter.html":"Moto X3M Winter",
+  "noobminer.html":"Noob Miner",
+  "ovo.html":"OvO",
+  "ovo2.html":"OvO 2",
+  "pacman.html":"Pac-Man",
+  "papasburgeria.html":"Papa's Burgeria",
+  "papascupcakeria.html":"Papa's Cupcakeria",
+  "papasfreezeria.html":"Papa's Freezeria",
+  "papaspancakeria.html":"Papa's Pancakeria",
+  "papaswingeria.html":"Papa's Wingeria",
+  "parkingfury.html":"Parking Fury",
+  "polytrack.html":"PolyTrack",
+  "ragdollarchers.htm":"Ragdoll Archers",
+  "ragdollhit.html":"Ragdoll Hit",
+  "retrobowl.html":"Retro Bowl",
+  "retrobowlcollege.html":"Retro Bowl College",
+  "retrohighway.html":"Retro Highway",
+  "retropingpong.html":"Retro Ping Pong",
+  "riddleschool.html":"Riddle School",
+  "riddleschool3.html":"Riddle School 3",
+  "riddleschool4.html":"Riddle School 4",
+  "rooftopsnipers2.html":"Rooftop Snipers 2",
+  "sandgame.html":"Sand Game",
+  "spacebarclicker.html":"Spacebar Clicker",
+  "spaceiskey.html":"Space Is Key",
+  "spaceiskey2.html":"Space Is Key 2",
+  "spacewaves.html":"Space Waves",
+  "speedstars.html":"Speed Stars",
+  "sprunki.html":"Sprunki",
+  "stack.html":"Stack",
+  "stickarchersbattle.html":"Stick Archers Battle",
+  "stickfighter.html":"Stick Fighter",
+  "stickmerge.html":"Stick Merge",
+  "superliquidsoccer.html":"Super Liquid Soccer",
+  "tabletennisworldtour.html":"Table Tennis World Tour",
+  "territorialio.html":"Territorial.io",
+  "theimpossiblequiz2.html":"The Impossible Quiz 2",
+  "thisistheonlylevel.html":"This Is the Only Level",
+  "timeshooter2.html":"Time Shooter 2",
+  "vexx3m2.html":"Vex X3M 2",
+  "volleyrandom.html":"Volley Random",
+  "webecomewhatwebehold.html":"We Become What We Behold",
+  "wheeliebike.html":"Wheelie Bike",
+  "wheely.html":"Wheely",
+  "wheely2.html":"Wheely 2",
+  "worldshardestgame2.html":"World's Hardest Game 2",
+  "wrestlebros.html":"Wrestle Bros",
+  "zombierush.html":"Zombie Rush"
+
+};
+
+function displayName(file){
+
+  if(specialNames[file]){
+    return specialNames[file];
+  }
+
+  let n = file
+    .replace(/\.(html|htm)$/i,"")
+    .replace(/[_-]+/g," ")
+    .replace(/([a-z])([A-Z])/g,"$1 $2")
+    .replace(/\s+/g," ")
+    .trim();
+
+  if(!n){
+    n = file;
+  }
+
+  return n
+    .split(" ")
+    .map(part => {
+
+      if(/^\d/.test(part) || part.length <= 2){
+        return part;
+      }
+
+      return part.charAt(0).toUpperCase() + part.slice(1);
+
+    })
+    .join(" ");
+}
+
+function hashColor(text){
+
+  let h = 0;
+
+  for(let i=0;i<text.length;i++){
+    h = (h * 31 + text.charCodeAt(i)) >>> 0;
+  }
+
+  const hue1 = h % 360;
+  const hue2 =
+    (hue1 + 35 + ((h >>> 8) % 60)) % 360;
+
+  return [
+    `hsl(${hue1} 72% 28%)`,
+    `hsl(${hue2} 75% 23%)`
+  ];
+}
+
+function initials(name){
+
+  const words = name
+    .split(/\s+/)
+    .filter(Boolean);
+
+  if(words.length >= 2){
+    return (
+      words[0][0] +
+      words[1][0]
+    ).toUpperCase();
+  }
+
+  return (
+    name
+      .replace(/[^a-z0-9]/gi,"")
+      .slice(0,2)
+      .toUpperCase() || "??"
+  );
+}
+
+function matchesCategory(file,category){
+
+  if(category === "All" || category === "Offline"){
+    return true;
+  }
+
+  if(category === "Favorites"){
+    return state.favorites.has(file);
+  }
+
+  return categoryMatchers[category]
+    ? categoryMatchers[category].test(
+        file + " " + displayName(file)
+      )
+    : false;
+}
+
+function filteredGames(){
+
+  const q = state.query.toLowerCase();
+
+  return files.filter(file => {
+
+    const name = displayName(file);
+
+    return (
+      matchesCategory(file,state.category) &&
+      (
+        !q ||
+        file.toLowerCase().includes(q) ||
+        name.toLowerCase().includes(q)
+      )
+    );
+
+  });
+}
+
+function categoryCount(category){
+
+  return files.filter(file =>
+    matchesCategory(file,category)
+  ).length;
+}
+
+function saveFavorites(){
+
+  localStorage.setItem(
+    "tog-game-favorites",
+    JSON.stringify([...state.favorites])
+  );
+}
+
+function openGame(file){
+  const gameUrl =
+    "https://thatoneguy-67.github.io/Games/offline/" +
+    encodeURIComponent(file);
+
+  fetch(gameUrl)
+    .then(response => response.text())
+    .then(text => {
+      const newWin = window.open("about:blank", "_blank");
+      if (newWin) {
+        newWin.document.open();
+        newWin.document.write(text);
+        newWin.document.close();
+     }
+    });
+
+  if(!newWin){
+    alert("Please allow popups for this site.");
+    return;
+  }
+
+  win.location.href = gameUrl;
+}
+
+function renderFilters(){
+
+  const el =
+    document.getElementById("filters");
+
+  el.innerHTML = "";
+
+  categoryNames.forEach(category => {
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "filter" +
+      (state.category === category
+        ? " active"
+        : "");
+
+    const count =
+      category === "All"
+        ? files.length
+        : categoryCount(category);
+
+    button.innerHTML =
+      `${category} <span class="count">${count}</span>`;
+
+    button.onclick = () => {
+
+      state.category = category;
+
+      render();
+
+    };
+
+    el.appendChild(button);
+
+  });
+}
+
+function render(){
+
+  const list = filteredGames();
+
+  document.getElementById("subtitle").textContent =
+    `${files.length.toLocaleString()} offline games, one click away`;
+
+  document.getElementById("results").textContent =
+    `// ${state.category.toLowerCase()} — ${list.length.toLocaleString()} results`;
+
+  renderFilters();
+
+  const grid =
+    document.getElementById("grid");
+
+  grid.innerHTML = "";
+
+  if(!list.length){
+
+    grid.innerHTML =
+      '<div class="empty">No games found.</div>';
+
+    return;
+  }
+
+  const frag =
+    document.createDocumentFragment();
+
+  list.forEach(file => {
+
+    const name =
+      displayName(file);
+
+    const [c1,c2] =
+      hashColor(file);
+
+    const card =
+      document.createElement("article");
+
+    card.className = "card";
+
+    const favorite =
+      state.favorites.has(file);
+
+    card.innerHTML = `
+
+      <div
+        class="cover"
+        style="--c1:${c1};--c2:${c2}"
+      >
+        <div class="initials">
+          ${escapeHtml(initials(name))}
+        </div>
+      </div>
+
+      <div class="card-body">
+
+        <div
+          class="name"
+          title="${escapeHtml(name)}"
+        >
+          ${escapeHtml(name)}
+        </div>
+
+        <button
+          class="star ${favorite ? "favorite" : ""}"
+          title="Favorite"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="${favorite ? "currentColor" : "none"}"
+            stroke="currentColor"
+            stroke-width="1.7"
+          >
+            <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"/>
+          </svg>
+        </button>
+
+        <div class="meta">
+          <span class="badge">OFFLINE</span>
+        </div>
+
+        <button
+          class="info"
+          title="Open game"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+          >
+            <circle cx="12" cy="12" r="8.5"/>
+            <path d="M12 10.5v5M12 7.5h.01"/>
+          </svg>
+        </button>
+
+      </div>
+    `;
+
+    card.querySelector(".cover").onclick =
+      () => openGame(file);
+
+    card.querySelector(".name").onclick =
+      () => openGame(file);
+
+    card.querySelector(".info").onclick =
+      () => openGame(file);
+
+    card.querySelector(".star").onclick =
+      event => {
+
+        event.stopPropagation();
+
+        if(state.favorites.has(file)){
+          state.favorites.delete(file);
+        }else{
+          state.favorites.add(file);
+        }
+
+        saveFavorites();
+        render();
+
+      };
+
+    frag.appendChild(card);
+
+  });
+
+  grid.appendChild(frag);
+}
+
+function escapeHtml(value){
+
+  return value.replace(
+    /[&<>"']/g,
+    char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    })[char]
+  );
+
+}
+
+document
+  .getElementById("search")
+  .addEventListener("input",event => {
+
+    state.query =
+      event.target.value.trim();
+
+    render();
+
+  });
+
+render();
+
+</script>
+
+</body>
+</html>
