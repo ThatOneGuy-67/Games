@@ -443,6 +443,7 @@ const files = [
   "johnnytrigger.html",
   "jumpingshell.html",
   "karatebros.html",
+  "kartbros.html",
   "learntofly.html",
   "learntofly2.html",
   "mergeroundracers.html",
@@ -463,6 +464,7 @@ const files = [
   "papaswingeria.html",
   "parkingfury.html",
   "polytrack.html",
+  "rocketleague.html",
   "ragdollarchers.htm",
   "ragdollhit.html",
   "retrobowl.html",
@@ -610,6 +612,7 @@ const specialNames = {
   "johnnytrigger.html":"Johnny Trigger",
   "jumpingshell.html":"Jumping Shell",
   "karatebros.html":"Karate Bros",
+  "kartbros.html":"Kart Bros",
   "learntofly.html":"Learn to Fly",
   "learntofly2.html":"Learn to Fly 2",
   "mergeroundracers.html":"Merge Round Racers",
@@ -630,6 +633,7 @@ const specialNames = {
   "papaswingeria.html":"Papa's Wingeria",
   "parkingfury.html":"Parking Fury",
   "polytrack.html":"PolyTrack",
+  "rocketleague.html":"Rocket League",
   "ragdollarchers.htm":"Ragdoll Archers",
   "ragdollhit.html":"Ragdoll Hit",
   "retrobowl.html":"Retro Bowl",
@@ -790,6 +794,8 @@ function saveFavorites(){
     JSON.stringify([...state.favorites])
   );
 }
+
+
 
 function openGame(file){
   const gameUrl =
