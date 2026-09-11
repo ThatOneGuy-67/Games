@@ -94,6 +94,37 @@ h1{
 .search{
   margin-top:11px;
   position:relative;
+  display:flex;
+  gap:7px;
+}
+
+.search #search{
+  flex:1;
+  min-width:0;
+}
+
+.random-game{
+  height:35px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:9px;
+  background:#15161a;
+  color:#e5e5e8;
+  padding:0 12px;
+  font-size:10px;
+  font-weight:650;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:.16s;
+}
+
+.random-game:hover{
+  background:#202126;
+  border-color:rgba(255,255,255,.22);
+  transform:translateY(-1px);
+}
+
+.random-game:active{
+  transform:translateY(0);
 }
 
 .search svg{
@@ -325,6 +356,19 @@ footer{
     gap:6px;
   }
 
+  .random-game{
+    padding:0 10px;
+  }
+
+  .random-game{
+    font-size:0;
+  }
+
+  .random-game::before{
+    content:"🎲";
+    font-size:15px;
+  }
+
   .cover{
     height:72px;
   }
@@ -371,6 +415,9 @@ footer{
         autocomplete="off"
         placeholder='Search games — try "mc", "1v1", "btd"...'
       >
+      <button id="randomGame" class="random-game" type="button" title="Pick a random game">
+        🎲 Random Game
+      </button>
 
     </div>
 
@@ -1118,7 +1165,7 @@ function openGame(file){
   win.location.href = gameUrl;
 }
 
-
+  
 function renderFilters(){
 
   const el =
@@ -1313,6 +1360,24 @@ document
       event.target.value.trim();
 
     render();
+
+  });
+
+document
+  .getElementById("randomGame")
+  .addEventListener("click", () => {
+
+    const list = filteredGames();
+
+    if(!list.length){
+      alert("No games match your current search/filter.");
+      return;
+    }
+
+    const randomFile =
+      list[Math.floor(Math.random() * list.length)];
+
+    openGame(randomFile);
 
   });
 
